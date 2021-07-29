@@ -83,7 +83,7 @@ class CustomerConnectionHandler extends ChatConnectionHandler {
         // Log this unspecified error to the console and
         // inform the customer there has been a problem
         console.log('Error after customer input: ', error);
-        this._sendErrorToCustomer(error);
+        // this._sendErrorToCustomer(error);
       });
   }
 
