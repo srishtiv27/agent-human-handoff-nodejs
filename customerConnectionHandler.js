@@ -32,11 +32,15 @@ class CustomerConnectionHandler extends ChatConnectionHandler {
         console.log('A customer connected: ', customer);
         // If new, begin the Dialogflow conversation
         if (customer.isNew) {
-          return this.router._sendEventToAgent(customer)
-            .then(responses => {
-              const response = responses[0];
-              this._respondToCustomer(response.queryResult.fulfillmentText, this.socket);
-            });
+          return this.router._notifyOperatorOfSwitch(customerId).then(() => {
+            // We return an array of two responses: the last utterance from the Dialogflow agent,
+            // and a mock "human" response introducing the operator.
+            // Also send everything to the operator so they can see how the agent responded
+            const customerConnection = this.router.customerConnections[customerId];
+            return customerConnection._respondToCustomer(AppConstants.OPERATOR_GREETING);
+            this.router._sendUtteranceToOperator(AppConstants.OPERATOR_GREETING, customer, true);
+          });;
+
         }
         // If known, do nothing - they just reconnected after a network interruption
       })

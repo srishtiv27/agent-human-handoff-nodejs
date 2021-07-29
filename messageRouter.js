@@ -73,7 +73,7 @@ class MessageRouter {
     // If this is the first time we've seen this customer,
     // we should trigger the default welcome intent.
     if (customer.isNew) {
-      return this._sendEventToAgent(customer);
+      return this._notifyOperatorOfSwitch (customerId);
     }
 
     // Since all customer messages should show up in the operator chat,
